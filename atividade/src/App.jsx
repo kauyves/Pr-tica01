@@ -1,32 +1,62 @@
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+import Card from "./components/Card";
+import SearchBar from "./components/SearchBar";
+
+const listCars = [
+  {
+    id: 1,
+    brand: "Hyundai",
+    model: "HB20",
+    km: "65.000",
+    category: "Hatch",
+    year: "2018",
+    price: "55.000,00",
+  },
+  {
+    id: 2,
+    brand: "Toyota",
+    model: "Hilux",
+    km: "100.000",
+    category: "Picape",
+    year: "2019",
+    price: "155.000,00",
+  },
+  {
+    id: 3,
+    brand: "Volkswagen",
+    model: "T-Cross",
+    km: "20.000",
+    category: "SUV",
+    year: "2021",
+    price: "135.000,00",
+  },
+];
+
+const App = () => {
+  const [cars, setCars] = useState(listCars);
+
+  const handleSearch = (query) => {
+    if (query === "") {
+      setCars(listCars);
+      return;
+    }
+
+    setCars(listCars.filter((car) => car.model.includes(query)));
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1>Anúncios Recentes</h1>
+      <SearchBar handleSearch={handleSearch} />
+      <div className="cards">
+        {cars.map((car) => (
+          <Card key={car.id} car={car} />
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
